@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/dist/output.css">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+</head>
+<body class="font-family bg-background-color">
+    <div class="container mx-auto px-4">
+        <div class="product-list grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-7 my-10 mt"></div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        fetch("https://www.cheapshark.com/api/1.0/deals?games&title=batman&onSale=1&sortBy=Price")
+        .then(response => response.json())
+        .then(responseJson => {
+            responseJson.forEach(item => {
+                console.log(item);
+                var priceNumber = item.savings;
+                $('.product-list').append(`
+                    <div>
+                        <a href="#" class="block bg-white rounded-2xl overflow-hidden transition lg:hover:shadow-lg hover:shadow-gray-300/50">
+                            <div class="product-image flex justify-center items-center h-60">
+                                <img src="${item.thumb}" class="w-auto max-h-full max-w-full object-contain object-center" alt="">
+                            </div>
+                            <div class="product-content py-8 px-6">
+                                <div class="mb-3 text-heading-color font-normal text-xl lg:text-2xl sm:h-14 lg:h-16 overflow-hidden">${item.title}</div>
+                                <div class="mb-3 text-red-color font-normal text-lg lg:text-xl">%${Math.round(priceNumber)}</div>
+                                <div class="flex items-baseline">
+                                    <div class="text-heading-color font-normal text-lg lg:text-2xxl">$${item.salePrice}</div>
+                                    <div class="ml-2 text-lg lg:text-xl font-normal text-red-color line-through">$${item.normalPrice}</div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                `);
+            })
+        })
+    </script>
+</body>
+</html>
